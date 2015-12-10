@@ -94,5 +94,11 @@ def cross_product(t1, t2):
 
     """
 
-    return []
+    result = []
+    result.append(t1[0]+t2[0])
+    for i in range(1,len(t1)):
+        for j in range(1, len(t2)):
+            result.append(t1[i]+t2[j])
+
+    return result
 
