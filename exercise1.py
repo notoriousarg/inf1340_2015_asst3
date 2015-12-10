@@ -67,6 +67,17 @@ def projection(t, r):
     [["A", "C"], [1, 3], [4, 6]]
 
     """
+    projection_list = []
+    new_list = []
+    for i in xrange(len(t[0])):
+        for s in xrange(len(r)):
+            if r[s] == t[0][i]:
+                projection_list.append(i)
+            else:
+                UnknownAttributeException("Not the same attribution")
+    for n in xrange(len(t)):
+        new_list.append([t[n][index] for index in projection_list])
+    return remove_duplicates(new_list)
 
     return []
 
