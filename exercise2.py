@@ -34,6 +34,12 @@ containing the following keys:
 COUNTRIES = None
 
 
+with open("test_returning_citizen.json", "r") as file_reader:
+    file_contents = file_reader.read()
+with open("countries.json", "r") as file_reader:
+    json_citizens = json.loads(file_contents)
+
+
 #####################
 # HELPER FUNCTIONS ##
 #####################
@@ -93,5 +99,7 @@ def valid_date_format(date_string):
     :param date_string: date to be checked
     :return: Boolean True if the format is valid, False otherwise
     """
+
+
 
     return False
