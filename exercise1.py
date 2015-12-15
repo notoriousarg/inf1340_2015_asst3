@@ -39,21 +39,28 @@ class UnknownAttributeException(Exception):
     pass
 
 
+EMPLOYEES = [["Surname", "FirstName", "Age", "Salary"],
+             ["Smith", "Mary", 25, 2000],
+             ["Black", "Lucy", 40, 3000],
+             ["Verdi", "Nico", 36, 4500],
+             ["Smith", "Mark", 40, 3900]]
+
+
+
+
 def selection(t, f):
-    """
-    Perform select operation on table t that satisfy condition f.
-
-    Example:
-    > R = [["A", "B", "C"], [1, 2, 3], [4, 5, 6]]
-    ># Define function f that returns True iff
-    > # the last element in the row is greater than 3.
-    > def f(row): row[-1] > 3
-    > select(R, f)
-    [["A", "B", "C"], [4, 5, 6]]
-
-    """
+    selection_list = []
+    selection_list.append(t[0])
+    for row in t[1:]:
+        if f(row) is True:
+            selection_list.append(row)
+    if len(selection_list) == 1:
+        return None
+    else:
+        return selection_list
 
     return []
+#selection()
 
 
 def projection(t, r):
@@ -95,10 +102,9 @@ def cross_product(t1, t2):
     """
 
     result = []
-    result.append(t1[0]+t2[0])
-    for i in range(1,len(t1)):
+    result.append(t1[0] + t2[0])
+    for i in range(1, len(t1)):
         for j in range(1, len(t2)):
-            result.append(t1[i]+t2[j])
+            result.append(t1[i] + t2[j])
 
     return result
-
