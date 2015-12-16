@@ -15,6 +15,11 @@ import re
 import datetime
 import json
 
+with open("test_jsons/test_returning_citizen.json", "r") as file_reader:
+    file_contents = file_reader.read()
+
+json_contents = json.loads(file_contents)
+
 ######################
 ## global constants ##
 ######################
@@ -100,6 +105,11 @@ def valid_date_format(date_string):
     :return: Boolean True if the format is valid, False otherwise
     """
 
+    if re.match('^\d{4}-\d{2}-\d{2}$', date_string):
+        return True
+    else:
+        return False
 
 
-    return False
+for item in json_contents:
+    print (valid_date_format(item['birth_date']))
