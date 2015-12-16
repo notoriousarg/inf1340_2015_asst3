@@ -6,10 +6,7 @@ Computer-based immigration office for Kanadia
 
 """
 
-__author__ = 'Susan Sim'
-__email__ = "ses@drsusansim.org"
-__copyright__ = "2015 Susan Sim"
-__license__ = "MIT License"
+__author__ = 'Adam Rogers Green, Therese Owusu, Paola Santiago'
 
 import re
 import datetime
@@ -48,6 +45,10 @@ with open("countries.json", "r") as file_reader:
 #####################
 # HELPER FUNCTIONS ##
 #####################
+
+
+
+
 def is_more_than_x_years_ago(x, date_string):
     """
     Check if date is less than x years ago.
@@ -112,6 +113,7 @@ def valid_date_format(date_string):
     :return: Boolean True if the format is valid, False otherwise
     """
 
+
     if re.match('^\d{4}-\d{2}-\d{2}$', date_string):
         return True
     else:
@@ -120,3 +122,14 @@ def valid_date_format(date_string):
 
 for item in json_contents:
     print (valid_date_format(item['birth_date']))
+
+
+
+def home_from_country(location_known):
+    if location_known is CITIZEN["home"]["country"] == "KAN":
+        return True
+    else:
+        if location_known in COUNTRY:
+            return
+
+
