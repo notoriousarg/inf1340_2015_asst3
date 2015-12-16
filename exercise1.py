@@ -60,7 +60,6 @@ def selection(t, f):
         return selection_list
 
     return []
-#selection()
 
 
 def projection(t, r):
