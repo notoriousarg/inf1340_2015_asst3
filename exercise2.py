@@ -103,6 +103,14 @@ def valid_visa_format(visa_code):
     :return: Boolean; True if the format is valid, False otherwise
 
     """
+    if re.match('^\w{5}-\w{5}-$', visa_code):
+        return True
+    else:
+        return False
+
+for item in json_contents:
+        print ((valid_visa_format(item['visa_code']))
+
 
 
 def valid_date_format(date_string):

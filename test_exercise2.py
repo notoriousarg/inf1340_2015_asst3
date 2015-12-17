@@ -12,9 +12,10 @@ __status__ = "Prototype"
 
 # imports one per line
 import pytest
-import os
-from exercise2 import decide
 
+import pytest
+import os
+from test2 import decide
 
 DIR = "test_jsons/"
 os.chdir(DIR)
@@ -27,3 +28,10 @@ def test_returning():
     assert decide("test_returning_citizen.json", "countries.json") ==\
         ["Accept", "Accept", "Quarantine"]
 
+def test_incoming():
+    """
+    Foreigners entering KAN. Must check if their documents are in order and properly filled
+    """
+
+    assert decide("test_incoming_foreigner.json", "countries.json") ==\
+           ['Accept', 'Reject', 'Quarantine', 'Accept']

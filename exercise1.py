@@ -49,6 +49,7 @@ EMPLOYEES = [["Surname", "FirstName", "Age", "Salary"],
 
 
 def selection(t, f):
+
     selection_list = []
     selection_list.append(t[0])
     for row in t[1:]:
@@ -58,6 +59,7 @@ def selection(t, f):
         return None
     else:
         return selection_list
+
 
     return []
 
@@ -102,8 +104,16 @@ def cross_product(t1, t2):
 
     result = []
     result.append(t1[0] + t2[0])
+    t1_i = 1
     for i in range(1, len(t1)):
+        t2_i = 1
         for j in range(1, len(t2)):
             result.append(t1[i] + t2[j])
+            t2_i += 1
+        t1_i += 1
+    if len(result) == 1:
+        return None
+    else:
+        return result
 
     return result
