@@ -13,7 +13,6 @@ __status__ = "Prototype"
 # imports one per line
 import pytest
 
-import pytest
 import os
 from exercise2 import decide
 

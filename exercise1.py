@@ -8,35 +8,11 @@ implemented as lists of lists. """
 __author__ = 'Adam Rogers-Green, Therese Owusu, Paola Santiago'
 
 
-EMPLOYEES = [["Surname", "FirstName", "Age", "Salary"],
-             ["Smith", "Mary", 25, 2000],
-             ["Black", "Lucy", 40, 3000],
-             ["Verdi", "Nico", 36, 4500],
-             ["Smith", "Mark", 40, 3900]]
-
-CEO = [["Surname","FirstName", "Age", "Salary"],
-       ["Andrews", "Kevin", 54, 12330],
-       ["Hand", "Martin", 46, 7452],
-       ["Jackson", "Samantha", 34, 8514]]
-
-STAFF = [["ID", "Name", "Position", "Age"],
-         [7466, "Frank Underwood", "President", 55],
-         [5323, "Jeffrey Winger", "Former Lawyer", 40],
-         [1233, "Piper Chapman", "Prisoner", 31],
-         [4383, "Oliver Dart", "Unknown", 23]]
-
-PROFESSORS = [["Salary","Number", "Surname", "Age"],
-              [7855,7434, "Silva", 33],
-              [1554, 8374, "Cray", 40],
-              [42314, 9824, "Darkes", 38]]
-
-
-#LAWYERS = [[Environmental, Civil, Family, Corporate]]
-
-
 #####################
 # HELPER FUNCTIONS ##
 #####################
+
+
 def filter_employees(row):
     """
     Check if employee represented by row
