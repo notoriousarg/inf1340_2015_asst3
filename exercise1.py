@@ -47,7 +47,17 @@ EMPLOYEES = [["Surname", "FirstName", "Age", "Salary"],
 
 
 def selection(t, f):
+    """
 
+    Perform select operation on table t that satisfy condition f.
+    Example:
+    > R = [["A", "B", "C"], [1, 2, 3], [4, 5, 6]]
+    ># Define function f that returns True iff
+    > # the last element in the row is greater than 3.
+    > def f(row): row[-1] > 3
+    > select(R, f)
+    [["A", "B", "C"], [4, 5, 6]]
+    """
     selection_list = []
     selection_list.append(t[0])
     for row in t[1:]:
