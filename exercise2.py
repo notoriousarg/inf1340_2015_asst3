@@ -35,12 +35,18 @@ containing the following keys:
 '''
 COUNTRIES = None
 
-
-with open("test_returning_citizen.json", "r") as file_reader:
-    file_contents = file_reader.read()
 with open("countries.json", "r") as file_reader:
-    json_citizens = json.loads(file_contents)
+    country_contents = file_reader.read()
+COUNTRY = json.loads(country_contents)
+with open("test_returning_citizen.json", "r") as file_reader:
+    citizen_contents = file_reader.read()
+CITIZEN = json.loads(citizen_contents)
 
+
+country_home = CITIZEN["home"]["country"]
+country_from = CITIZEN["from"]["country"]
+country_code = COUNTRY["code"]
+country_warning = COUNTRY["medical_advisory"]
 
 #####################
 # HELPER FUNCTIONS ##
@@ -63,22 +69,6 @@ def is_more_than_x_years_ago(x, date_string):
     date = datetime.datetime.strptime(date_string, '%Y-%m-%d')
 
     return (date - x_years_ago).total_seconds() < 0
-
-
-def decide(input_file, countries_file):
-    """
-    Decides whether a traveller's entry into Kanadia should be accepted
-
-    :param input_file: The name of a JSON formatted file that contains
-        cases to decide
-    :param countries_file: The name of a JSON formatted file that contains
-        country data, such as whether an entry or transit visa is required,
-        and whether there is currently a medical advisory
-    :return: List of strings. Possible values of strings are:
-        "Accept", "Reject", and "Quarantine"
-    """
-
-    return ["Reject"]
 
 
 def valid_passport_format(passport_number):
@@ -133,11 +123,75 @@ for item in json_contents:
 
 
 
-def home_from_country(location_known):
-    if location_known is CITIZEN["home"]["country"] == "KAN":
+def check_required_fields (CITIZEN):
+    #check if all fields in entry record are present with values
+
+    for entries in REQUIRED_FIELDS:
+        person = CITIZEN[entries]
+        if len(person) < 0:
+            return False
+        else:
+            return True
+
+
+def location_known(homecountry,fromcountry):
+
+    """
+    Checks whether the home country and from country of each citizen in test_returning_citizen.json are valid in the country code countries.json data
+    :param home country
+    :param from country:
+    :return Boolean:
+    """
+    if country_home and country_from in country_code:
         return True
     else:
-        if location_known in COUNTRY:
-            return
+        return False
 
+def returning_or_visitor():
+    #check if traveller is returning or visitor and then check whether that country needs visitor_visa or not
+    if CITIZEN["entry_reason"] == "returning":
+        if CITIZEN["home"]["country"] == "KAN":
+            return True
+        else:
+            return False
+    elif CITIZEN["entry_reason"] == "visiting" and CITIZEN["home"]["country"] in COUNTRY["code"]:
+        country_home = CITIZEN["home"]["country"]
+        if COUNTRY[country_home]["visitor_visa_required"] == "0":
+            return True
+        elif COUNTRY[country_home]["visitor_visa_required"] == "1":
+            if valid_visa == "True":
+                return True
+            else:
+                return False
+        else:
+            return False
+    else:
+        return False
 
+def medical_advisory_warning():
+    #check whether country has medical_advisory warning from country.json
+    if country_from in len(country_warning) > 0:
+        return True
+    else:
+        return False
+
+def decide(input_file, countries_file):
+    """
+    Decides whether a traveller's entry into Kanadia should be accepted
+
+    :param input_file: The name of a JSON formatted file that contains
+        cases to decide
+    :param countries_file: The name of a JSON formatted file that contains
+        country data, such as whether an entry or transit visa is required,
+        and whether there is currently a medical advisory
+    :return: List of strings. Possible values of strings are:
+        "Accept", "Reject", and "Quarantine"
+    """
+    if medical_advisory_warning() == True:
+        return ["Quarantine"]
+    elif check_required_fields() == False or location_known() == False or returning_or_visitor() == False:
+        return ["Reject"]
+    else:
+        return ["Accept"]
+
+decide(CITIZEN, COUNTRY)
