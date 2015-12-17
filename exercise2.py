@@ -87,6 +87,16 @@ def valid_passport_format(passport_number):
 for item in file_contents:
     print (valid_passport_format(item["passport"]))
 
+    """
+    def valid_visa_format(visa_code):
+    if re.match('^\w{5}-\w{5}$', visa_code) == True and is_more_than_x_years_ago(2, item['visa']['date']) == True:
+        return True
+    else:
+        return False
+
+for item in json_contents:
+            print valid_visa_format(item['visa']['code'])
+    """
 def valid_visa_format(visa_code):
     """
     Checks whether a visa code is two groups of five alphanumeric characters
@@ -100,8 +110,17 @@ def valid_visa_format(visa_code):
         return False
 
 for item in json_contents:
-        print ((valid_visa_format(item['visa_code']))
+        print (valid_visa_format(item['visa']['code']))
 
+"""
+    if re.match('^\w{5}-\w{5}$', visa_code) == True and is_more_than_x_years_ago(2, item['visa']['date']) == True:
+        return True
+    else:
+        return False
+
+for item in json_contents:
+            print valid_visa_format(item['visa']['code'])
+"""
 
 
 def valid_date_format(date_string):
@@ -110,7 +129,6 @@ def valid_date_format(date_string):
     :param date_string: date to be checked
     :return: Boolean True if the format is valid, False otherwise
     """
-
 
     if re.match('^\d{4}-\d{2}-\d{2}$', date_string):
         return True
