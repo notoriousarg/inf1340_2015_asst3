@@ -12,17 +12,20 @@ import re
 import datetime
 import json
 
+
+with open("test_jsons/countries.json", "r") as file_reader:
+    country_contents = file_reader.read()
+COUNTRY = json.loads(country_contents)
 with open("test_jsons/test_returning_citizen.json", "r") as file_reader:
-    file_contents = file_reader.read()
-
-json_contents = json.loads(file_contents)
-
+    citizen_contents = file_reader.read()
+CITIZEN = json.loads(citizen_contents)
 ######################
 ## global constants ##
 ######################
 REQUIRED_FIELDS = ["passport", "first_name", "last_name",
                    "birth_date", "home", "entry_reason", "from"]
 
+PLACES = ["home", "from", "country"]
 ######################
 ## global variables ##
 ######################
@@ -35,18 +38,7 @@ containing the following keys:
 '''
 COUNTRIES = None
 
-with open("countries.json", "r") as file_reader:
-    country_contents = file_reader.read()
-COUNTRY = json.loads(country_contents)
-with open("test_returning_citizen.json", "r") as file_reader:
-    citizen_contents = file_reader.read()
-CITIZEN = json.loads(citizen_contents)
 
-
-country_home = CITIZEN["home"]["country"]
-country_from = CITIZEN["from"]["country"]
-country_code = COUNTRY["code"]
-country_warning = COUNTRY["medical_advisory"]
 
 #####################
 # HELPER FUNCTIONS ##
@@ -84,19 +76,15 @@ def valid_passport_format(passport_number):
         return False
 
 
-for item in file_contents:
-    print (valid_passport_format(item["passport"]))
+#def valid_visa_format(visa_code):
+#        if re.match('^\w{5}-\w{5}$', visa_code) == True and is_more_than_x_years_ago(2, item['visa']['date']) == True:
+#            return True
+#        else:
+#            return False
 
-    """
-    def valid_visa_format(visa_code):
-    if re.match('^\w{5}-\w{5}$', visa_code) == True and is_more_than_x_years_ago(2, item['visa']['date']) == True:
-        return True
-    else:
-        return False
+#for item in CITIZEN:
+#        print valid_visa_format(item['visa']['code'])
 
-for item in json_contents:
-            print valid_visa_format(item['visa']['code'])
-    """
 def valid_visa_format(visa_code):
     """
     Checks whether a visa code is two groups of five alphanumeric characters
@@ -109,18 +97,12 @@ def valid_visa_format(visa_code):
     else:
         return False
 
-for item in json_contents:
-        print (valid_visa_format(item['visa']['code']))
 
-"""
+def valid_visa():
     if re.match('^\w{5}-\w{5}$', visa_code) == True and is_more_than_x_years_ago(2, item['visa']['date']) == True:
         return True
     else:
         return False
-
-for item in json_contents:
-            print valid_visa_format(item['visa']['code'])
-"""
 
 
 def valid_date_format(date_string):
@@ -134,10 +116,6 @@ def valid_date_format(date_string):
         return True
     else:
         return False
-
-
-for item in json_contents:
-    print (valid_date_format(item['birth_date']))
 
 
 
@@ -177,7 +155,7 @@ def returning_or_visitor():
         if COUNTRY[country_home]["visitor_visa_required"] == "0":
             return True
         elif COUNTRY[country_home]["visitor_visa_required"] == "1":
-            if valid_visa == "True":
+            if valid_visa() == "True":
                 return True
             else:
                 return False
@@ -186,12 +164,17 @@ def returning_or_visitor():
     else:
         return False
 
-def medical_advisory_warning():
+def medical_advisory_warning(citizen, country):
     #check whether country has medical_advisory warning from country.json
-    if country_from in len(country_warning) > 0:
-        return True
-    else:
-        return False
+
+    boundary = PLACES[1:]
+    for a in boundary:
+        if a in CITIZEN:
+            code_country = CITIZEN["country"]["from"]
+            if COUNTRY[code_country]["medical_advisory"] != "":
+                return True
+
+    return medical_advisory_warning
 
 def decide(input_file, countries_file):
     """
@@ -205,11 +188,21 @@ def decide(input_file, countries_file):
     :return: List of strings. Possible values of strings are:
         "Accept", "Reject", and "Quarantine"
     """
-    if medical_advisory_warning() == True:
-        return ["Quarantine"]
-    elif check_required_fields() == False or location_known() == False or returning_or_visitor() == False:
-        return ["Reject"]
-    else:
-        return ["Accept"]
+
+
+with open("test_jsons/countries.json", "r") as file_reader:
+    country_contents = file_reader.read()
+COUNTRY = json.loads(country_contents)
+with open("test_jsons/test_returning_citizen.json", "r") as file_reader:
+    citizen_contents = file_reader.read()
+CITIZEN = json.loads(citizen_contents)
+
+
+if medical_advisory_warning() == True:
+    return "Quarantine"
+elif check_required_fields() == False or location_known() == False or returning_or_visitor() == False:
+    print "Reject"
+else:
+    print "Accept"
 
 decide(CITIZEN, COUNTRY)
