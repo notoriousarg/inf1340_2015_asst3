@@ -12,13 +12,6 @@ import re
 import datetime
 import json
 
-
-with open("test_jsons/countries.json", "r") as file_reader:
-    country_contents = file_reader.read()
-country = json.loads(country_contents)
-with open("test_jsons/test_returning_citizen.json", "r") as file_reader:
-    citizen_contents = file_reader.read()
-citizen = json.loads(citizen_contents)
 ######################
 ## global constants ##
 ######################
@@ -37,7 +30,6 @@ containing the following keys:
 "transit_visa_required","medical_advisory"
 '''
 COUNTRIES = None
-
 
 
 #####################
@@ -73,7 +65,6 @@ def valid_passport_format(passport_number):
         return False
 
 
-
 def valid_visa_format(visa_code):
     """
     Checks whether a visa code is two groups of five alphanumeric characters
@@ -88,7 +79,7 @@ def valid_visa_format(visa_code):
 
 
 def valid_visa():
-    if valid_visa_format() == True and is_more_than_x_years_ago(2, item['visa']['date']) == True:
+    if valid_visa_format() == True and is_more_than_x_years_ago(2, ['visa']['date']) == True:
         return True
     else:
         return False
@@ -107,9 +98,11 @@ def valid_date_format(date_string):
         return False
 
 
-
-def check_required_fields (citizen):
-    #check if all fields in entry record are present with values
+def check_required_fields(citizen):
+    """check if all fields in entry record are present with values
+        :param citizen: each value in the citizens json
+        :return: Boolean True if the format is valid, False otherwise
+    """
     acceptable = True
     for entries in REQUIRED_FIELDS:
         if entries not in citizen:
@@ -117,28 +110,37 @@ def check_required_fields (citizen):
     return acceptable
 
 
-def location_known (citizen,country):
-
+def location_known(citizen, country):
     """
     Checks whether the home country and from country of each citizen in test_returning_citizen.json are valid in the country code countries.json data
-    :param home country
-    :param from country:
-    :return Boolean:
+    :param home country and from country of citizen.json
+    :param country code of country.json
+    :return Boolean: True if both home and from countries are valid, false otherwise
     """
     if citizen["home"]["country"] and citizen["from"]["country"] in country["code"]:
         return True
     else:
         return False
 
+
 def returning(citizen):
-    #check if traveller is returning or visitor and then check whether that country needs visitor_visa or not
+    """
+     check if traveller is returning
+     :param: citizen entry reason and home country in citizen.json
+      :return: Boolean - true if it is valid, false otherwise
+    """
     if citizen["entry_reason"] == "returning":
         if citizen["home"]["country"] == "KAN":
             return True
         else:
             return False
 
-def visitor(citizen):
+
+def visitor(citizen, country):
+    """
+    :param citizen: check whether that country needs visitor_visa or not in country.json
+    :return: Boolean - true if citizen does not need visa or has required visa, false otherwise
+    """
     if citizen["entry_reason"] == "visiting" and citizen["home"]["country"] in country["code"]:
         country_home = citizen["home"]["country"]
         if country[country_home]["visitor_visa_required"] == "0":
@@ -153,8 +155,12 @@ def visitor(citizen):
     else:
         return False
 
+
 def medical_advisory_warning(citizen, country):
-    #check whether country has medical_advisory warning from country.json
+    """check whether country has medical_advisory warning from country.json
+    :param: citizen.json, country.json
+    :return: Boolean - true if no medical advisory warning
+    """
 
     boundary = PLACES[1:]
     for a in boundary:
@@ -163,7 +169,6 @@ def medical_advisory_warning(citizen, country):
             if country[code_country]["medical_advisory"] != "":
                 return True
 
-    return medical_advisory_warning
 
 def decide(input_file, countries_file):
     """
@@ -174,16 +179,16 @@ def decide(input_file, countries_file):
     :param countries_file: The name of a JSON formatted file that contains
         country data, such as whether an entry or transit visa is required,
         and whether there is currently a medical advisory
-    :return: List of strings. Possible values of strings are:
+    :return: results [] List of strings. Possible values of strings are:
         "Accept", "Reject", and "Quarantine"
     """
 
-with open("test_jsons/countries.json", "r") as file_reader:
-    country_contents = file_reader.read()
-    country = json.loads(country_contents)
-with open("test_jsons/test_returning_citizen.json", "r") as file_reader:
-    citizen_contents = file_reader.read()
-    citizen = json.loads(citizen_contents)
+    with open("test_jsons/countries.json", "r") as file_reader:
+        country_contents = file_reader.read()
+        country = json.loads(country_contents)
+    with open("test_jsons/test_returning_citizen.json", "r") as file_reader:
+        citizen_contents = file_reader.read()
+        citizen = json.loads(citizen_contents)
 
     results = []
 
@@ -193,7 +198,7 @@ with open("test_jsons/test_returning_citizen.json", "r") as file_reader:
         accept = False
         if not check_required_fields(citizen):
             reject = True
-        elif not location_known (citizen,country):
+        elif not location_known(citizen, country):
             reject = True
         else:
             if returning(citizen):
@@ -213,3 +218,4 @@ with open("test_jsons/test_returning_citizen.json", "r") as file_reader:
         elif accept:
             results.append("Accept")
 
+    return results
