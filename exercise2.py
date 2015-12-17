@@ -6,7 +6,7 @@ Computer-based immigration office for Kanadia
 
 """
 
-__author__ = 'Adam Rogers Green, Therese Owusu, Paola Santiago'
+__author__ = 'Adam Rogers-Green, Therese Owusu, Paola Santiago'
 
 import re
 import datetime

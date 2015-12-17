@@ -15,7 +15,7 @@ import pytest
 
 import pytest
 import os
-from test2 import decide
+from exercise2 import decide
 
 DIR = "test_jsons/"
 os.chdir(DIR)
