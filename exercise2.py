@@ -44,9 +44,6 @@ COUNTRIES = None
 # HELPER FUNCTIONS ##
 #####################
 
-
-
-
 def is_more_than_x_years_ago(x, date_string):
     """
     Check if date is less than x years ago.
@@ -113,13 +110,11 @@ def valid_date_format(date_string):
 
 def check_required_fields (citizen):
     #check if all fields in entry record are present with values
-
+    acceptable = True
     for entries in REQUIRED_FIELDS:
-        person = citizen[entries]
-        if len(person) < 0:
-            return False
-        else:
-            return True
+        if entries not in citizen:
+            acceptable = False
+    return acceptable
 
 
 def location_known (citizen,country):
@@ -144,7 +139,7 @@ def returning(citizen):
             return False
 
 def visitor(citizen):
-    if citizen["entry_reason"] == "visiting" and citizen["home"]["country"] in COUNTRY["code"]:
+    if citizen["entry_reason"] == "visiting" and citizen["home"]["country"] in country["code"]:
         country_home = citizen["home"]["country"]
         if country[country_home]["visitor_visa_required"] == "0":
             return True
