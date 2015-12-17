@@ -10,10 +10,19 @@
       "country": "KAN"
     },
     "entry_reason": "returning",
+     "visa": {
+      "date": "2009-12-31",
+      "code": "CFR6X-XSMVA"
+      },
     "from": {
       "city": "Weasel",
       "region": "Rodent",
       "country": "BRD"
+    },
+    "via": {
+      "city": "Paris",
+      "region": "EK",
+      "country": "CLR"
     }
   },
   {
@@ -27,10 +36,19 @@
       "country": "KAN"
     },
     "entry_reason": "returning",
+     "visa": {
+      "date": "2001-12-31",
+      "code": "CFR6X-XSMVA"
+      },
     "from": {
       "city": "Desmond",
       "region": "Ohio",
       "country": "JIK"
+    },
+    "via": {
+      "city": "Paris",
+      "region": "EK",
+      "country": "CLR"
     }
   },
   {
@@ -44,10 +62,45 @@
       "country": "KAN"
     },
     "entry_reason": "returning",
+    "visa": {
+      "date": "2015-10-31",
+      "code": "CFR6X-XSMVA"
+      },
     "from": {
       "city": "a",
       "region": "a",
       "country": "LUG"
+    },
+    "via": {
+      "city": "Paris",
+      "region": "EK",
+      "country": "BRD"
+    }
+  },
+  {
+    "passport": "FWO9A-B8MDF-TGXW5-H49SO-HI5VE",
+    "first_name": "VICKI",
+    "last_name": "NOYES",
+    "birth_date": "1969-12-11",
+    "home": {
+      "city": "a",
+      "region": "a",
+      "country": "III"
+    },
+    "entry_reason": "visit",
+    "visa": {
+      "date": "1999-12-31",
+      "code": "CFR6X-XSMVA"
+    },
+    "from": {
+      "city": "a",
+      "region": "a",
+      "country": "JIK"
+    },
+    "via": {
+      "city": "Tokyo",
+      "region": "EK",
+      "country": "ALB"
     }
   }
 ]
